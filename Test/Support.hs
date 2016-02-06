@@ -1,4 +1,4 @@
-module Test.Support where
+module Support where
 
 shouldEql :: (Eq a, Show a) => a -> a -> String
 shouldEql a b

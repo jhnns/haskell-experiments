@@ -30,6 +30,13 @@ Test-Suite Sort
     hs-source-dirs: src, test
     default-language: Haskell2010
 
+Test-Suite Vector
+    type: exitcode-stdio-1.0
+    main-is: VectorSpec.hs
+    build-depends: base
+    hs-source-dirs: src, test
+    default-language: Haskell2010
+
 Test-Suite Points
     type: exitcode-stdio-1.0
     main-is: PointsSpec.hs

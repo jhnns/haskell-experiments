@@ -14,19 +14,22 @@ convexHull ps
         l = length ps;
         c = center ps;
         start = top ps;
+        spin = drop 1;
         circle = let
             sorted = sort ps c;
             index = fromJust $ elemIndex start sorted;
             in drop index (cycle sorted);
+        circle1 = spin circle;
+        circle2 = spin circle1;
         walk 0 _ ps _ _ = ps;
         walk i circle hull p1 p2  = let
             p3 = head circle;
             phi = angle (diff p1 p2) (diff p3 p2);
-            spin = walk (i - 1) (tail circle);
-            save = spin (p2:hull) p2 p3;
-            skip = spin hull p1 p3;
+            next = walk (i - 1) (tail circle);
+            save = next (p2:hull) p2 p3;
+            skip = next hull p1 p3;
             in if phi > 180 then save else skip;
-        in walk l (drop 2 circle) [] start (circle !! 1)
+        in walk l circle2 [] start (head circle1)
 
 center :: [Point] -> Point
 center ps

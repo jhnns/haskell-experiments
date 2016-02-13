@@ -1,4 +1,18 @@
-module Points where
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Points
+-- License     :  Unlicense
+--
+-- Maintainer  :  mail@johannesewald.de
+--
+-- Provides methods to work with points in a 2-dimensional space.
+-- All coordinates are in single float precision.
+--
+-----------------------------------------------------------------------------
+module Points (
+    convexHull,
+    center
+    ) where
 
 import Data.List (elemIndex)
 import Data.Maybe (fromJust)
@@ -7,6 +21,13 @@ import Sort (sort)
 import Vector (angle, diff)
 import Debug.Trace (trace)
 
+{-|
+    Returns a subset of the given list which contains all points that
+    form the convex hull. That is, no outer angle is smaller than 180°.
+    The returned list is sorted clockwise, starting with the point with the
+    greatest y coordinate. Returns an empty list if an empty list is given or
+    all points are located on a line.
+-}
 convexHull :: [Point] -> [Point]
 convexHull ps
     | length ps < 3 = []
@@ -28,6 +49,11 @@ convexHull ps
             in if phi > 180 then save else skip;
         in walk circle2 (length ps) [] start (head circle1)
 
+{-|
+    Returns the center of the given point cloud. The center defined by the
+    intersection of the both diagonals of the smallest rectangle that enfolds
+    all points.
+-}
 center :: [Point] -> Point
 center [] = error "cannot find center of an empty list"
 center ps@(p1:_)

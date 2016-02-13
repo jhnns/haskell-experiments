@@ -1,6 +1,6 @@
 module Main where
 
-import Sort (sort, radian)
+import Sort (sort)
 import Point (Point)
 import Support (shouldEql)
 
@@ -15,14 +15,6 @@ p13 = (1, 3)
 
 main :: IO ()
 main = print $ foldl1 (++) [
-
-    radian p00 `shouldEql` 0,
-    radian p10 `shouldEql` 0,
-    radian p10' `shouldEql` pi,
-    radian p01 `shouldEql` (0.5 * pi),
-    radian p01' `shouldEql` (-0.5 * pi),
-    radian p11 `shouldEql` (0.25 * pi),
-    radian p11' `shouldEql` (-0.75 * pi),
 
     sort [] p00 `shouldEql` [],
     sort [p00] p00 `shouldEql` [p00],

@@ -1,6 +1,6 @@
 module Main where
 
-import Points (convexHull, center, top, right, bottom, left)
+import Points (convexHull, center)
 import Point (Point)
 import Support (shouldEql)
 
@@ -16,34 +16,6 @@ p02 = (0, 2)
 
 main :: IO ()
 main = print $ foldl1 (++) [
-
-    top [p00] `shouldEql` p00,
-    top [p00, p01] `shouldEql` p01,
-    top [p00, p10] `shouldEql` p10,
-    top [p00, p01'] `shouldEql` p00,
-    top [p00, p00] `shouldEql` p00,
-    top [(-1, 1), p00, p11] `shouldEql` p11,
-
-    right [p00] `shouldEql` p00,
-    right [p00, p01] `shouldEql` p01,
-    right [p00, p10] `shouldEql` p10,
-    right [p00, p10'] `shouldEql` p00,
-    right [p00, p00] `shouldEql` p00,
-    right [p10', p00, p10] `shouldEql` p10,
-
-    bottom [p00] `shouldEql` p00,
-    bottom [p00, p01] `shouldEql` p00,
-    bottom [p00, p10] `shouldEql` p10,
-    bottom [p00, p01'] `shouldEql` p01',
-    bottom [p00, p00] `shouldEql` p00,
-    bottom [p11', p00, p11] `shouldEql` p11',
-
-    left [p00] `shouldEql` p00,
-    left [p00, p01] `shouldEql` p01,
-    left [p00, p10] `shouldEql` p00,
-    left [p00, p10'] `shouldEql` p10',
-    left [p00, p00] `shouldEql` p00,
-    left [p10', p00, p10] `shouldEql` p10',
 
     center [p00] `shouldEql` p00,
     center [p10', p10] `shouldEql` p00,

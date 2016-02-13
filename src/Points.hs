@@ -13,7 +13,8 @@ convexHull ps
     | otherwise = let
         l = length ps;
         c = center ps;
-        start = top ps;
+        maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2;
+        start = foldl1 maxY ps;
         spin = drop 1;
         circle = let
             sorted = sort ps c;
@@ -32,42 +33,14 @@ convexHull ps
         in walk l circle2 [] start (head circle1)
 
 center :: [Point] -> Point
-center ps
-    -- no need to check for length = 0, foldl1 will throw on an empty list anyway
-    | length ps == 1 = head ps
-    | length ps == 2 =
-        let
-            p1@(x, y) = head ps;
-            (x', y') = diff p1 (last ps);
-            in (x + x' / 2, y + y' / 2)
-    | otherwise =
-        let
-            minX = fst $ left ps;
-            maxX = fst $ right ps;
-            minY = snd $ bottom ps;
-            maxY = snd $ top ps;
-            in center [(minX, minY), (maxX, maxY)]
-
-top :: [Point] -> Point
-top = foldl1 maxY
-
-maxY :: Point -> Point -> Point
-maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2
-
-right :: [Point] -> Point
-right = foldl1 maxX
-
-maxX :: Point -> Point -> Point
-maxX p1@(x1, _) p2@(x2, _) = if x1 > x2 then p1 else p2
-
-bottom :: [Point] -> Point
-bottom = foldl1 minY
-
-minY :: Point -> Point -> Point
-minY p1@(_, y1) p2@(_, y2) = if y1 < y2 then p1 else p2
-
-left :: [Point] -> Point
-left = foldl1 minX
-
-minX :: Point -> Point -> Point
-minX p1@(x1, _) p2@(x2, _) = if x1 < x2 then p1 else p2
+center [] = error "cannot find center of an empty list"
+center ps@(p1:_)
+    | length ps == 1 = p1
+    | length ps == 2 = let
+        (x, y) = p1;
+        (x', y') = diff p1 (last ps);
+        in (x + x' / 2, y + y' / 2)
+    | otherwise = let
+        xs = map fst ps;
+        ys = map snd ps;
+        in center [(minimum xs, minimum ys), (maximum xs, maximum ys)]

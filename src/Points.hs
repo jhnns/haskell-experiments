@@ -7,33 +7,31 @@ import Sort (sort)
 import Vector (angleBetween, diff)
 import Debug.Trace (trace)
 
--- https://github.com/haskell/vector/blob/master/benchmarks/Algo/Quickhull.hs
--- https://en.wikipedia.org/wiki/Quickhull
-
 convexHull :: [Point] -> [Point]
 convexHull ps
     | length ps < 3 = []
     | length ps == 3 = let
-        angle = angleBetween (head ps) (ps!!1) (ps!!2);
+        [p1, p2, p3] = ps;
+        angle = angleBetween p1 p2 p3;
         isTriangle = angle /= 0 && angle /= 180;
         in if isTriangle then ps else []
     | otherwise = let
         l = length ps;
         c = center ps;
-        t = top ps;
-        rotate n xs = zipWith const (drop n (cycle xs)) xs;
-        sorted = let
+        start = top ps;
+        circle = let
             sorted = sort ps c;
-            index = fromJust (elemIndex t sorted);
-            in rotate index sorted;
-        walk 0 ps _ _ _ = ps;
-        walk i ps p1 p2 ps' = let
-            p3 = head ps';
+            index = fromJust (elemIndex start sorted);
+            in drop index (cycle sorted);
+        walk 0 _ ps _ _ = ps;
+        walk i circle hull p1 p2  = let
+            p3 = head circle;
             angle = angleBetween p2 p1 p3;
-            save = trace ("save " ++ show p1 ++ show p2 ++ show p3 ++ show angle) (walk (i - 1) (p2:ps) p2 p3 (tail ps'));
-            skip = trace ("skip " ++ show p1 ++ show p2 ++ show p3 ++ show angle) (walk (i - 1) ps p1 p3 (tail ps'));
+            spin = walk (i - 1) (tail circle);
+            save = spin (p2:hull) p2 p3;
+            skip = spin hull p1 p3;
             in if angle > 180 then save else skip;
-        in walk l [] t (sorted!!1) (drop 2 (cycle sorted))
+        in walk l (drop 2 circle) [] start (circle !! 1)
 
 center :: [Point] -> Point
 center ps

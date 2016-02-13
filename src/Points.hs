@@ -9,6 +9,7 @@
 -- All coordinates are in single float precision.
 --
 -----------------------------------------------------------------------------
+
 module Points (
     convexHull,
     center
@@ -28,17 +29,29 @@ import Debug.Trace (trace)
     greatest y coordinate. Returns an empty list if an empty list is given or
     all points are located on a line.
 -}
+{-
+    About the algorithm of convexHull
+-}
 convexHull :: [Point] -> [Point]
 convexHull ps
     | length ps < 3 = []
     | otherwise = let
-        maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2;
-        start = foldl1 maxY ps;
+        -- 1. Find the starting point p1 that is guaranteed on the convex hull.
+        p1 = let
+            maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2;
+            in foldl1 maxY ps;
         circle1 = let
+            -- 2. Sort all points around the center of the point cloud.
             sorted = sort ps (center ps);
-            index = fromJust $ elemIndex start sorted;
-            in drop (index + 1) (cycle sorted);
-        circle2 = drop 1 circle1;
+            -- 3. In order to walk all points, we use a cycled list which is
+            -- rotated until the first element after the starting point is
+            -- the head.
+            index = fromJust $ elemIndex p1 sorted;
+            in drop (index + 1) (cycle sorted)
+        -- 4. Now walk around the circle and save all points to our `hull` list
+        -- that have an outer angle greater than 180. We use an iteration
+        -- counter i in order to track whether we have walked around the whole
+        -- circle. In that case we just return `hull` as result.
         walk _ 0 hull _ _ = hull;
         walk circle i hull p1 p2 = let
             p3 = head circle;
@@ -47,7 +60,12 @@ convexHull ps
             save = next (p2:hull) p2 p3;
             skip = next hull p1 p3;
             in if phi > 180 then save else skip;
-        in walk circle2 (length ps) [] start (head circle1)
+        in walk
+            (drop 1 circle1)    -- circle
+            (length ps)         -- iteration counter
+            []                  -- hull
+            p1
+            (head circle1)      -- p2
 
 {-|
     Returns the center of the given point cloud. The center defined by the

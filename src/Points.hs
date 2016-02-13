@@ -23,7 +23,7 @@ convexHull ps
         t = top ps;
         rotate n xs = zipWith const (drop n (cycle xs)) xs;
         sorted = let
-            sorted = sort (ps \\ [c]) c;
+            sorted = sort ps c;
             index = fromJust (elemIndex t sorted);
             in rotate index sorted;
         walk 0 ps _ _ _ = ps;

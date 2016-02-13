@@ -15,15 +15,13 @@ convexHull ps
         c = center ps;
         maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2;
         start = foldl1 maxY ps;
-        spin = drop 1;
-        circle = let
+        circle1 = let
             sorted = sort ps c;
             index = fromJust $ elemIndex start sorted;
-            in drop index (cycle sorted);
-        circle1 = spin circle;
-        circle2 = spin circle1;
+            in drop (index + 1) (cycle sorted);
+        circle2 = drop 1 circle1;
         walk 0 _ ps _ _ = ps;
-        walk i circle hull p1 p2  = let
+        walk i circle hull p1 p2 = let
             p3 = head circle;
             phi = angle (diff p1 p2) (diff p3 p2);
             next = walk (i - 1) (tail circle);

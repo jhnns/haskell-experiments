@@ -1,6 +1,6 @@
 module Points where
 
-import Data.List (foldl', elemIndex)
+import Data.List (foldl', elemIndex, (\\))
 import Data.Maybe (fromJust)
 import Point (Point)
 import Sort (sort)
@@ -23,7 +23,7 @@ convexHull ps
         t = top ps;
         rotate n xs = zipWith const (drop n (cycle xs)) xs;
         sorted = let
-            sorted = sort ps c;
+            sorted = sort (ps \\ [c]) c;
             index = fromJust (elemIndex t sorted);
             in rotate index sorted;
         walk 0 ps _ _ _ = ps;

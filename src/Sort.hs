@@ -27,6 +27,4 @@ compareRadian p1 p2 = let
     in if r == EQ then m else r
 
 radian :: Point -> Float
-radian (x, y)
-    | x == 0 && y == 0 = 100 -- just an arbitrary value that won't clash with atan2 returned values
-    | otherwise = atan2 y x
+radian (x, y) = atan2 y x

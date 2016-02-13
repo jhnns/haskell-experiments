@@ -50,9 +50,11 @@ main = print $ foldl1 (++) [
     sort [
         p10', p10, p11, p01, p01', p01, p00, p10', p11'
     ] p13 `shouldEql` [
-        p10', p10', p01, p01, p11', p00, p01', p10, p11
+        p10', p10', p01, p01, p11', p00, p01', p11, p10
     ],
 
+    sort [p10, p00, p10'] (-2, 0) `shouldEql` [p10', p00, p10],
+
     "done"
-    
+
     ]

@@ -26,14 +26,14 @@ convexHull ps
             sorted = sort ps c;
             index = fromJust (elemIndex t sorted);
             in rotate index sorted;
-        walk ps p1 p2 [] = ps
-        walk ps p1 p2 ps' = let
+        walk 0 ps _ _ _ = ps;
+        walk i ps p1 p2 ps' = let
             p3 = head ps';
             angle = angleBetween p2 p1 p3;
-            save = walk (ps ++ [p2]) p2 p3 (tail ps');
-            skip = walk ps p1 p3 (tail ps');
+            save = trace ("save " ++ show p1 ++ show p2 ++ show p3 ++ show angle) (walk (i - 1) (p2:ps) p2 p3 (tail ps'));
+            skip = trace ("skip " ++ show p1 ++ show p2 ++ show p3 ++ show angle) (walk (i - 1) ps p1 p3 (tail ps'));
             in if angle > 180 then save else skip;
-        in walk [] t (sorted!!1) (sorted ++ [t, (sorted!!1)])
+        in walk l [] t (sorted!!1) (drop 2 (cycle sorted))
 
 center :: [Point] -> Point
 center ps

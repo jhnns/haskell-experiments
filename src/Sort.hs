@@ -1,6 +1,7 @@
 module Sort where
 
 import Data.List (sortBy)
+import Vector (magn)
 import Point (Point)
 import Debug.Trace (trace)
 
@@ -20,7 +21,10 @@ translate :: Point -> Point -> Point
 translate (vx, vy) (px, py) = (px + vx, py + vy)
 
 compareRadian :: Point -> Point -> Ordering
-compareRadian p1 p2 = compare (radian p1) (radian p2)
+compareRadian p1 p2 = let
+    r = compare (radian p1) (radian p2);
+    m = compare (magn p1) (magn p2);
+    in if r == EQ then m else r
 
 radian :: Point -> Float
 radian (x, y)

@@ -69,9 +69,9 @@ main = print $ foldl1 (++) [
     convexHull [p00, p10, p10', p20] `shouldEql` [],
     convexHull [p00, p01, p01', p02] `shouldEql` [],
 
-    convexHull [p00, p01, p10] `shouldEql` [p00, p01, p10],
+    convexHull [p00, p01, p10] `shouldEql` [p01, p10, p00],
     convexHull [p01, p10, p00] `shouldEql` [p01, p10, p00],
-    convexHull [p10, p00, p01] `shouldEql` [p10, p00, p01],
+    convexHull [p10, p00, p01] `shouldEql` [p01, p10, p00],
 
     convexHull [
         (-1,  1),   ( 1,  1),

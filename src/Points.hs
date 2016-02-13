@@ -10,11 +10,6 @@ import Debug.Trace (trace)
 convexHull :: [Point] -> [Point]
 convexHull ps
     | length ps < 3 = []
-    | length ps == 3 = let
-        [p1, p2, p3] = ps;
-        phi = angle (diff p2 p1) (diff p3 p1);
-        isTriangle = phi /= 0 && phi /= 180;
-        in if isTriangle then ps else []
     | otherwise = let
         l = length ps;
         c = center ps;

@@ -40,7 +40,7 @@ convexHull ps
         maxY = let
             maxY p1@(_, y1) p2@(_, y2) = if y1 > y2 then p1 else p2;
             in foldl1 maxY ps;
-        circle1 = let
+        circle = let
             -- 2. Sort all points around the center of the point cloud.
             sorted = sort ps (center ps);
             -- 3. In order to walk all points, we use a cycled list which is
@@ -65,11 +65,11 @@ convexHull ps
             skip = next hull pl pr;
             in if phi > 180 then save else skip;
         in walk
-            (drop 1 circle1)    -- circle
+            (drop 1 circle)     -- circle
             (length ps)         -- iteration counter
             []                  -- hull
             maxY                -- pl
-            (head circle1)      -- p
+            (head circle)       -- p
 
 {-|
     Returns the center of the given point cloud. The center is defined by the

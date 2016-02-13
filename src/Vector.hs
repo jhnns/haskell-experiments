@@ -7,8 +7,8 @@ type Vector = (Float, Float)
 rad :: Float
 rad = pi / 180
 
-angleBetween :: Vector -> Vector -> Float
-angleBetween v1 v2
+angle :: Vector -> Vector -> Float
+angle v1 v2
     | m1 == 0 || m2 == 0 || v1 == v2 = 0
     | otherwise = let
         angle = deg . acos $ (v1 `dot` v2) / (m1 * m2);

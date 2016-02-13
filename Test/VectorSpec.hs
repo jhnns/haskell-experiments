@@ -1,6 +1,6 @@
 module Main where
 
-import Vector (angleBetween, orient)
+import Vector (angle, orient)
 import Support (shouldEql)
 
 p00 = (0, 0)
@@ -21,18 +21,18 @@ main = print $ foldl1 (++) [
     orient (-1, 1) p11' `shouldEql` ccw,
     orient p10 p00 `shouldEql` 0,
 
-    angleBetween p00 p00 `shouldEql` 0,
-    angleBetween p01 p00 `shouldEql` 0,
-    angleBetween p00 p01 `shouldEql` 0,
+    angle p00 p00 `shouldEql` 0,
+    angle p01 p00 `shouldEql` 0,
+    angle p00 p01 `shouldEql` 0,
 
-    angleBetween p10 p01 `shouldEql` 90,
-    angleBetween p01 p10 `shouldEql` 270,
+    angle p10 p01 `shouldEql` 90,
+    angle p01 p10 `shouldEql` 270,
 
-    angleBetween p01 p01' `shouldEql` 180,
-    angleBetween p01' p01 `shouldEql` 180,
+    angle p01 p01' `shouldEql` 180,
+    angle p01' p01 `shouldEql` 180,
 
-    angleBetween p10' p10 `shouldEql` 180,
-    angleBetween p10 p10' `shouldEql` 180,
+    angle p10' p10 `shouldEql` 180,
+    angle p10 p10' `shouldEql` 180,
 
     "done"
 

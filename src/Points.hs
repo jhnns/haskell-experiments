@@ -12,7 +12,7 @@ convexHull ps
     | length ps < 3 = []
     | length ps == 3 = let
         [p1, p2, p3] = ps;
-        angle = angleBetween p1 p2 p3;
+        angle = angleBetween (diff p2 p1) (diff p3 p1);
         isTriangle = angle /= 0 && angle /= 180;
         in if isTriangle then ps else []
     | otherwise = let
@@ -26,7 +26,7 @@ convexHull ps
         walk 0 _ ps _ _ = ps;
         walk i circle hull p1 p2  = let
             p3 = head circle;
-            angle = angleBetween p2 p1 p3;
+            angle = angleBetween (diff p1 p2) (diff p3 p2);
             spin = walk (i - 1) (tail circle);
             save = spin (p2:hull) p2 p3;
             skip = spin hull p1 p3;
